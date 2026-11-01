@@ -39,6 +39,7 @@ For each reviewer:
 - The brief is self-contained. A delegated reviewer gets only the brief, never your context.
 - The brief says read-only: inspect only, no writes, no git commands that change state.
 - For an `auto` or `inherit-parent` entry, omit the model so that reviewer runs on the parent model.
+- Pass every option in the entry's parentheses through `target.options`: the effort level under that model's effort option id, plus each `option: value` pair verbatim (for example `fastMode: false`). An option left out falls back to the provider default, and cursor Grok defaults to fast mode.
 
 If `delegate_task` rejects a configured entry, say so and run that reviewer on the closest available model of the same family from `orchestrator_capabilities`. Do not block the review on it.
 
