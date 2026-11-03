@@ -34,10 +34,6 @@ Act now; waiting out the limit stalls the run.
 - The push draws a fresh CodeRabbit review; triage it as above. Still limited on the new head: run the panel again on that delta only.
 - After two limit notices in a row, stop requesting CodeRabbit reviews. Report the head as panel-reviewed and pending CodeRabbit capacity, and judge mergeable on the other criteria.
 
-## Review-capacity coordinator
-
-Skills that queue for capacity instead of running the panel (`pr-babysitter`, `long-horizon-work`) use the MASTER PR REVIEW COORDINATOR thread. Find it with `t3_thread_list` and `titleContains="MASTER PR REVIEW COORDINATOR"`. Send it one `t3_thread_send` per PR with your own thread id, the PR URL, the head sha, and when capacity returns (N from "available in N minutes"). Queue a PR once; if the head moved, follow up on the earlier request. When your slot comes, comment `@coderabbitai review` once.
-
 ## Settled
 
 CodeRabbit reviewed the head commit, or the head is limit-blocked and panel-reviewed with every verified finding fixed or declined, and no review thread is unresolved.
