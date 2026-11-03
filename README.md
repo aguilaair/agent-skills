@@ -7,6 +7,10 @@ p3-mode and its playbooks, setup-p3, autonomous-poteto, the routed skills
 [uzairansaruzi/p3-stack](https://github.com/uzairansaruzi/p3-stack)
 (MIT, see `LICENSE`) at 09909eb, with local changes.
 
+Also `release-announcement`: the Terradot prod-deploy changelog for Slack and
+its on-brand bento image (`render.sh` installs `playwright-core` once into
+`~/.cache/release-announcement` and renders with the system Chrome).
+
 ## Install or update
 
 ```bash

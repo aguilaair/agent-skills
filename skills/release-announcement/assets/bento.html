@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Platform Updates</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#2A92F4; --blue-600:#1C7AD6; --blue-50:#EAF4FE; --blue-100:#D4E9FD;
+    --ink:#020817; --slate-900:#0F172A; --muted:#64748B; --line:#E2E8F0; --slate-50:#F8FAFC; --slate-100:#F1F5F9;
+    --success:#166534; --success-bg:#DCFCE7; --warning:#F59E0B; --warning-bg:#FEF3C7; --danger:#DB2424; --danger-bg:#FEE2E2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--slate-50)}
+  body{width:1600px;font-family:Inter,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+  .page{width:1600px;padding:56px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(900px 500px at 100% 0%, rgba(42,146,244,.16), transparent 60%),
+      radial-gradient(700px 500px at 0% 100%, rgba(42,146,244,.10), transparent 60%),
+      radial-gradient(circle at 1px 1px, rgba(15,23,42,.10) 1px, transparent 0) 0 0/24px 24px,
+      var(--slate-50)}
+
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;grid-auto-flow:dense}
+  .tile{border-radius:28px;padding:34px 36px;position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);
+    box-shadow:0 1px 2px rgba(15,23,42,.04),0 20px 40px -28px rgba(15,23,42,.30)}
+  h2{font-weight:800;font-size:31px;letter-spacing:-.03em;line-height:1.05;display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .emo{font-size:30px;line-height:1;display:inline-grid;place-items:center;width:58px;height:58px;border-radius:18px;background:var(--blue-50);flex:none}
+  ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+  li{font-size:19px;line-height:1.45;padding-left:24px;position:relative;color:#1E293B}
+  li::before{content:"";position:absolute;left:3px;top:11px;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+  b{font-weight:700;color:var(--ink)}
+  code{font-family:"JetBrains Mono",monospace;font-size:15.5px;background:var(--slate-100);border:1px solid var(--line);padding:1px 7px;border-radius:7px}
+  .tag{display:inline-flex;align-items:center;gap:6px;font-family:"JetBrains Mono";font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    padding:6px 12px;border-radius:999px}
+  .corner{position:absolute;top:30px;right:30px}
+
+  /* HERO */
+  .hero{grid-column:span 8;background:var(--ink);border-color:var(--ink);color:#fff;padding:44px 48px;min-height:340px;display:flex;flex-direction:column;justify-content:space-between}
+  .hero .logo{height:34px}
+  .hero .kicker{font-family:"JetBrains Mono";font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:#93C5FD;display:flex;gap:12px;align-items:center;margin-top:34px}
+  .hero .kicker .dot{width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 6px rgba(42,146,244,.25)}
+  .hero h1{font-weight:800;font-size:84px;line-height:.95;letter-spacing:-.05em;margin:14px 0 16px}
+  .hero h1 em{font-style:normal;color:var(--blue)}
+  .hero p{font-size:20px;color:#94A3B8;max-width:620px;line-height:1.45}
+  .hero .orb{position:absolute;right:-110px;top:-170px;width:400px;height:400px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #5FB0FA, var(--blue) 45%, #0B4F94 100%);opacity:.9}
+  .hero .orb::after{content:"";position:absolute;inset:-40px;border-radius:50%;border:1.5px dashed rgba(147,197,253,.35)}
+  .hero .count{position:absolute;right:48px;bottom:44px;text-align:right}
+  .hero .count .n{font-weight:800;font-size:64px;letter-spacing:-.04em;line-height:1}
+  .hero .count .l{font-family:"JetBrains Mono";font-size:14px;color:#94A3B8;letter-spacing:.06em;text-transform:uppercase;margin-top:6px}
+
+  /* GARDENS */
+  .gardens{grid-column:span 4;background:var(--blue-50);border-color:var(--blue-100)}
+  .gardens{display:flex;flex-direction:column}
+  .gardens .emo{background:#fff}
+  .swap{margin-top:auto;padding-top:22px;display:flex;align-items:center;gap:10px}
+  .swap .old{font-size:15px;font-weight:600;color:var(--muted);text-decoration:line-through;padding:9px 14px;border:1.5px dashed #CBD5E1;border-radius:12px}
+  .swap .new{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:700;background:#fff;border:1px solid var(--blue-100);padding:8px 14px 8px 10px;border-radius:12px;box-shadow:0 8px 18px -12px rgba(42,146,244,.6)}
+  .swap .new img{height:20px;width:20px;object-fit:cover;object-position:left}
+  .swap .arrow{color:var(--muted);font-weight:700}
+
+  /* ACCESS — brand blue */
+  .access{grid-column:span 7;grid-row:span 2;background:var(--blue);border-color:var(--blue);color:#fff;display:flex;flex-direction:column}
+  .access h2{color:#fff}
+  .access .emo{background:rgba(255,255,255,.18)}
+  .access li{color:rgba(255,255,255,.92)}
+  .access li::before{background:#fff}
+  .access b{color:#fff}
+  .access code{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.25);color:#fff}
+  .mock{margin-top:26px;background:#fff;color:var(--ink);border-radius:20px;padding:18px 20px 8px;box-shadow:0 24px 40px -20px rgba(2,8,23,.5);transform:rotate(-1.2deg)}
+  .mock .bar{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .mock .bar .d{width:11px;height:11px;border-radius:50%;background:var(--line)}
+  .mock .bar .t{font-weight:700;font-size:18px;margin-left:8px;letter-spacing:-.01em}
+  .mock .bar .scope{margin-left:auto;font-family:"JetBrains Mono";font-size:13px;background:var(--blue-50);color:var(--blue-600);padding:4px 10px;border-radius:8px}
+  .mock table{width:100%;border-collapse:collapse;font-size:16px}
+  .mock th{font-family:"JetBrains Mono";font-weight:500;font-size:13px;color:var(--muted);text-align:center;padding:6px 4px;border-bottom:1px solid var(--line)}
+  .mock th:first-child{text-align:left}
+  .mock td{padding:10px 4px;border-bottom:1px solid var(--slate-100);text-align:center}
+  .mock tr:last-child td{border-bottom:0}
+  .mock td:first-child{text-align:left;display:flex;align-items:center;gap:10px;font-weight:600}
+  .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12.5px;font-weight:700;color:#fff}
+  .cb{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;border:1.5px solid #CBD5E1;font-size:14px;font-weight:800;vertical-align:middle}
+  .cb.on{background:var(--blue);border-color:var(--blue);color:#fff}
+  .grp{font-size:12px;margin-left:6px;font-family:"JetBrains Mono";color:var(--muted);vertical-align:middle}
+  .roles{display:flex;gap:10px;margin-top:22px}
+  .role{display:flex;align-items:center;gap:8px;font-size:15.5px;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:8px 14px;border-radius:999px}
+  .heads{margin-top:22px;background:var(--ink);border-radius:18px;padding:18px 22px;font-size:18px;line-height:1.45;color:#CBD5E1}
+  .heads b{color:#fff}
+  .heads code{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15);color:#fff}
+  .heads .tag{background:var(--warning);color:var(--ink);margin-right:10px;vertical-align:2px;padding:4px 10px}
+  .cta{margin-top:auto;padding-top:20px;display:flex;align-items:center;gap:14px;font-size:19px;color:#fff}
+  .cta .pillbtn{margin-left:auto;background:#fff;color:var(--blue-600);font-weight:700;font-size:16px;padding:11px 18px;border-radius:999px;white-space:nowrap}
+
+  /* ROCK */
+  .rock{grid-column:span 5}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .chip{font-size:14.5px;font-weight:600;padding:6px 12px;border-radius:999px;display:flex;align-items:center;gap:7px}
+  .chip::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+  .c-nd{background:var(--blue-50);color:var(--blue-600)}
+  .c-del{background:var(--warning-bg);color:#92400E}
+  .c-app{background:var(--success-bg);color:var(--success)}
+  .c-np{background:var(--slate-100);color:var(--muted)}
+
+  /* COGNITO */
+  .cognito{grid-column:span 5}
+  .months{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;margin-top:22px}
+  .m{aspect-ratio:1;border-radius:7px;display:grid;place-items:center;font-size:11px;font-weight:700;font-family:"JetBrains Mono"}
+  .m.v{background:var(--success);color:#fff}.m.q{background:var(--warning);color:var(--ink)}.m.r{background:var(--danger);color:#fff}.m.a{background:var(--slate-100);color:var(--muted);border:1px solid var(--line)}.m.f{background:transparent;border:1.5px dashed #CBD5E1;color:#94A3B8}
+  .legend{display:flex;gap:16px;margin-top:12px;font-size:13.5px;font-weight:500;color:var(--muted);flex-wrap:wrap}
+  .legend span{display:flex;gap:6px;align-items:center}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  /* ANALYSIS */
+  .analysis{grid-column:span 5;background:var(--ink);border-color:var(--ink);color:#fff}
+  .analysis h2{color:#fff}
+  .analysis .emo{background:rgba(255,255,255,.08)}
+  .analysis li{color:#CBD5E1}
+  .analysis b{color:#fff}
+  .analysis .corner{background:var(--success);color:#fff}
+  .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;align-items:center}
+  .pill{font-size:14.5px;font-weight:600;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:#E2E8F0;border:1px solid rgba(255,255,255,.12)}
+  .pill.go{background:#22C55E;border-color:#22C55E;color:var(--ink)}
+  .pill.dead{text-decoration:line-through;opacity:.5;background:transparent;border-style:dashed}
+  .arrow{color:#64748B;font-weight:700}
+
+  /* FISCAL */
+  .fiscal{grid-column:span 4}
+
+  /* LCA */
+  .lca{grid-column:span 3;background:var(--blue-50);border-color:var(--blue-100)}
+  .lca .emo{background:#fff}
+  .lca li{font-size:18px}
+
+  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
+  .foot img{height:26px}
+  .foot span{font-family:"JetBrains Mono";font-size:14px;color:var(--muted);letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="grid">
+
+  <section class="tile hero">
+    <div class="orb"></div>
+    <div style="position:relative">
+      <img class="logo" src="logo-dark.svg" alt="Terradot">
+      <div class="kicker"><span class="dot"></span>Platform update · Oct 16 → Nov 3</div>
+      <h1>New on the<br>platform<em>.</em></h1>
+      <p>New access controls, a Rock tab on every farm, supplier questionnaires, real lab statuses, and a lot of fixes.</p>
+    </div>
+    <div class="count"><div class="n">7</div><div class="l">areas updated</div></div>
+  </section>
+
+  <section class="tile gardens">
+    <span class="tag corner" style="background:var(--ink);color:#fff">Fixed</span>
+    <h2><span class="emo">🌾</span>Gardens</h2>
+    <ul>
+      <li>Every Gardens app now uses the <b>Terradot login (Clerk)</b> instead of Google IAP, so access can be managed <b>per app</b></li>
+      <li>No more <b>“Not signed in”</b> errors a minute after opening a page</li>
+    </ul>
+    <div class="swap"><span class="old">Google IAP</span><span class="arrow">→</span><span class="new"><img src="mark.svg" alt="">Sign in with Terradot</span></div>
+  </section>
+
+  <section class="tile access">
+    <h2><span class="emo">🔐</span>Access</h2>
+    <ul>
+      <li>Admins can now <b>appoint managers</b>. Scope managers grant access under their scope (e.g. <code>garden:lca</code>), and group managers add and remove members. No admin needed</li>
+      <li>New <b>Manage Access</b> page for managers</li>
+      <li><b>Bulk-edit</b> access and add many people to groups at once. Banned users are hidden by default</li>
+    </ul>
+    <div class="roles"><span class="role">🧑‍✈️ Scope manager</span><span class="role">👥 Group manager</span><span class="role">⚡ Bulk edit</span></div>
+    <div class="mock">
+      <div class="bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="t">Manage Access</span><span class="scope">you manage garden:lca</span></div>
+      <table>
+        <tr><th>Person</th><th>garden:lca</th><th>garden:lca:admin</th></tr>
+        <tr><td><span class="av" style="background:var(--blue)">AL</span>LCA analyst</td><td><span class="cb on">✓</span></td><td><span class="cb on">✓</span></td></tr>
+        <tr><td><span class="av" style="background:var(--slate-900)">OP</span>Ops lead</td><td><span class="cb on">✓</span><span class="grp">via group</span></td><td><span class="cb"></span></td></tr>
+        <tr><td><span class="av" style="background:#64748B">NH</span>New hire</td><td><span class="cb on">✓</span></td><td><span class="cb"></span></td></tr>
+        <tr><td><span class="av" style="background:#93C5FD;color:var(--ink)">+</span><span style="color:var(--muted);font-weight:500">Search to add a person…</span></td><td></td><td></td></tr>
+      </table>
+    </div>
+    <div class="heads"><span class="tag">Heads up</span>A parent scope now opens the apps under it but <b>not</b> their admin capabilities, so <code>erw</code> no longer gives <code>erw:admin</code></div>
+    <div class="cta"><span>Want to manage a scope? We’ll set you up.</span><span class="pillbtn">Reach out to us →</span></div>
+  </section>
+
+  <section class="tile rock">
+    <h2><span class="emo">🪨</span>Rock Transport &amp; farms</h2>
+    <ul>
+      <li>New <b>Rock tab</b> on each farm: delivery per field, drop sites with their NF-es, and a <b>Suppliers</b> view (loaders and spreaders)</li>
+      <li>Status now comes <b>only from real data</b>, with “Delivered” meaning NF-e tonnes ≥ 95% of plan</li>
+      <li>Drop sites show <b>planned tonnes</b> and a copy button for their UUID</li>
+    </ul>
+    <div class="chips">
+      <span class="chip c-nd">Not delivered</span>
+      <span class="chip c-del">Delivered</span>
+      <span class="chip c-app">Applied</span>
+      <span class="chip c-np">No plan</span>
+    </div>
+  </section>
+
+  <section class="tile cognito">
+    <h2><span class="emo">📋</span>Questionnaires &amp; mines</h2>
+    <ul>
+      <li>New <b>Questionnaires tab</b> on each mine with a 12-month grid of what each supplier sent</li>
+      <li><b>QA status per mine per month</b>, set automatically and adjustable by hand. Replaces the ops tracker spreadsheet columns</li>
+      <li>Cognito entries link to their <b>vendor, mine or farm</b>, with an Unlinked view on Ingestion for the rest</li>
+    </ul>
+    <div class="months">
+      <div class="m v">J</div><div class="m v">F</div><div class="m v">M</div><div class="m v">A</div><div class="m r">M</div><div class="m v">J</div>
+      <div class="m v">J</div><div class="m q">A</div><div class="m q">S</div><div class="m a">O</div><div class="m f">N</div><div class="m f">D</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--success)"></i>Validated</span>
+      <span><i style="background:var(--warning)"></i>In QA</span>
+      <span><i style="background:var(--danger)"></i>Returned</span>
+      <span><i style="background:var(--slate-100);border:1px solid var(--line)"></i>Awaiting</span>
+    </div>
+  </section>
+
+  <section class="tile analysis">
+    <span class="tag corner">Unstuck</span>
+    <h2><span class="emo">🧪</span>Analysis requests</h2>
+    <ul>
+      <li>Samples show their <b>real lab result status</b> and you can open the values the lab returned</li>
+      <li>Samples completed by hand count as <b>done</b> and show green</li>
+      <li>Labs are now <b>vendors</b>, and billing goes to a proper <b>legal entity</b></li>
+    </ul>
+    <div class="pills">
+      <span class="pill dead">in analysis forever</span><span class="arrow">→</span>
+      <span class="pill">Awaiting</span><span class="pill">Partial</span><span class="pill go">Results ✓</span>
+    </div>
+  </section>
+
+  <section class="tile fiscal">
+    <h2><span class="emo">🚚</span>Fiscal docs</h2>
+    <ul>
+      <li>Ingestion <b>warns</b> when a carrier says CT-es were cancelled but doesn’t send the cancellation</li>
+      <li>Mark an NF-e/CT-e <b>cancelled by hand</b>, with the SEFAZ printout</li>
+      <li>CT-e emails with lots of attachments <b>no longer lose files</b></li>
+    </ul>
+  </section>
+
+  <section class="tile lca">
+    <h2><span class="emo">🌲</span>LCA</h2>
+    <ul>
+      <li><code>Field_split</code> per sheet row</li>
+      <li>Certify references <b>survive renames</b></li>
+      <li>FX sync pulls <b>extra exchange rates</b></li>
+    </ul>
+  </section>
+
+</div>
+<div class="foot"><img src="logo.svg" alt="Terradot"><span>questions? ping #software</span></div>
+</div>
+</body>
+</html>
