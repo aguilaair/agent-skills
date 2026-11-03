@@ -66,7 +66,7 @@ Correct the log, not the story. The audit never edits or removes a row, even an 
 
 Before handing back, spawn a reviewer with `delegate_task` (`mode: "async"`, drained with `task_status`) on a different provider or model family from the one that did the work, resolved through `orchestrator_capabilities`; never hardcode a slug. Self-review is not a substitute. Its brief stands alone (T3 child agents get only the brief, never this conversation) and says read-only: inspect only, no writes.
 
-The reviewer reads the audit trail and the run's transcript with `t3_thread_read`, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky.
+The reviewer reads the audit trail and the run's transcript with `t3_thread_read`, then flags what the user should pay attention to. Not a redo of the work, a scan for what's suboptimal or risky. Pick the reviewer's reasoning effort and fast or standard speed for the job, per the Subagents section of the **p3-mode** skill, and pass both through `target.options`.
 
 - Decisions logged with weak or absent evidence.
 - Verification steps skipped or claimed without proof in the transcript.

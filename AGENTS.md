@@ -4,6 +4,10 @@ p3-stack adapts [pstack](https://github.com/cursor/plugins/tree/main/pstack) by 
 
 A skill reads as if it were written for T3 Code first. Keep pstack's sentences verbatim wherever they still apply. Replace every Cursor mechanism with the T3 Code equivalent below.
 
+## Syncing from pstack
+
+Last synced pstack commit: `c742dd6` (cursor/plugins, 2026-10-27). To sync again, diff `pstack/` from that commit to the new head, port only that diff into the local files under the rules below, and keep the local edits (the `~/.agents/p3-models.md` fallback, the `target.options` rule). Copy new vendor-neutral skills as they are. Then update this commit and the one in README.md.
+
 ## Delegated workers
 
 If you are a delegated worker, your brief names exactly one file. Write only that file, create parent directories as needed, and run no git commands. Report back the file path, its line count, and the changes you made to pstack's version.
