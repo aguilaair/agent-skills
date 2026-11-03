@@ -1,11 +1,14 @@
 # agent-skills
 
 Personal agent skills, kept in sync across machines. Currently the p3 stack:
-p3-mode and its playbooks, setup-p3, autonomous-poteto, the routed skills
+p3-mode and its playbooks, setup-p3, scope, buildit, the routed skills
 (how, why, arena, swarm, architect, interrogate, reflect, …) and the
 `principle-*` skills. Based on
 [uzairansaruzi/p3-stack](https://github.com/uzairansaruzi/p3-stack)
-(MIT, see `LICENSE`) at 09909eb, with local changes.
+(MIT, see `LICENSE`) at 09909eb, with local changes, and synced with
+[pstack](https://github.com/cursor/plugins/tree/main/pstack) up to
+`c742dd6` (2026-10-27). That sync added `ketchup`, `ketchup-video`, `sharpen`,
+`in-your-own-words`, `statechart`, and the two formal-verification skills.
 
 Also `release-announcement`: the Terradot prod-deploy changelog for Slack and
 its on-brand bento image (`render.sh` installs `playwright-core` once into
