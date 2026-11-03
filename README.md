@@ -1,7 +1,7 @@
 # agent-skills
 
 Personal agent skills, kept in sync across machines. Currently the p3 stack:
-p3-mode and its playbooks, setup-p3, scope, buildit, pr-babysitter, long-horizon-work, the routed skills
+p3-mode and its playbooks, setup-p3, scope, buildit, the routed skills
 (how, why, arena, swarm, architect, interrogate, reflect, …) and the
 `principle-*` skills. Based on
 [uzairansaruzi/p3-stack](https://github.com/uzairansaruzi/p3-stack)
