@@ -10,6 +10,9 @@ p3-mode and its playbooks, setup-p3, scope, buildit, the routed skills
 `c742dd6` (2026-10-27). That sync added `ketchup`, `ketchup-video`, `sharpen`,
 `in-your-own-words`, `statechart`, and the two formal-verification skills.
 
+And `explainer-video`: a narrated explainer film, its short cut, and a
+click-through presenter deck, all from one HTML composition.
+
 ## Install or update
 
 ```bash
