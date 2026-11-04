@@ -14,6 +14,9 @@ Also `release-announcement`: the Terradot prod-deploy changelog for Slack and
 its on-brand bento image (`render.sh` installs `playwright-core` once into
 `~/.cache/release-announcement` and renders with the system Chrome).
 
+And `explainer-video`: a narrated explainer film, its short cut, and a
+click-through presenter deck, all from one HTML composition.
+
 ## Install or update
 
 ```bash
