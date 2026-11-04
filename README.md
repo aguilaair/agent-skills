@@ -13,6 +13,12 @@ p3-mode and its playbooks, setup-p3, scope, buildit, the routed skills
 And `explainer-video`: a narrated explainer film, its short cut, and a
 click-through presenter deck, all from one HTML composition.
 
+And `feature-video`: a short before/after video of a feature change for the
+ops team, in English and Brazilian Portuguese, filmed on the branch's real
+screens. Unlike `explainer-video` it ships its engine (`fv.sh`); the first run
+installs Kokoro TTS, faster-whisper and `playwright-core` into
+`~/.cache/feature-video`.
+
 ## Install or update
 
 ```bash
