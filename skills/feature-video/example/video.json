@@ -1,0 +1,329 @@
+{
+  "slug": "spreading-map-passes",
+  "langs": [
+    "en",
+    "pt"
+  ],
+  "voices": {
+    "en": "af_heart",
+    "pt": "pf_dora"
+  },
+  "speed": {
+    "en": 1.0,
+    "pt": 1.0
+  },
+  "fps": 30,
+  "maxScale": 1.0,
+  "kicker": {
+    "en": "Web app · Spreading events",
+    "pt": "Web app · Eventos de espalhamento"
+  },
+  "title": {
+    "en": "Spreading maps now come <em>in passes</em>",
+    "pt": "Mapas de aplicação agora <em>em passadas</em>"
+  },
+  "short": {
+    "en": "Spreading maps in passes",
+    "pt": "Mapas em passadas"
+  },
+  "who": {
+    "en": "For whoever downloads spreading maps for the spreader operators.",
+    "pt": "Para quem baixa os mapas de aplicação para os operadores da distribuidora."
+  },
+  "ships": {
+    "en": "Live in the web app",
+    "pt": "Já está no web app"
+  },
+  "note": {
+    "en": "Test data · names blurred",
+    "pt": "Dados de teste · nomes ocultos"
+  },
+  "end": {
+    "title": {
+      "en": "Questions?",
+      "pt": "Dúvidas?"
+    },
+    "text": {
+      "en": "Ask in #software before you train your team.",
+      "pt": "Pergunte no #software antes de treinar a equipe."
+    }
+  },
+  "chapters": [
+    {
+      "id": "before",
+      "label": {
+        "en": "Before",
+        "pt": "Antes"
+      }
+    },
+    {
+      "id": "now",
+      "label": {
+        "en": "Now",
+        "pt": "Agora"
+      }
+    },
+    {
+      "id": "watch",
+      "label": {
+        "en": "Watch out",
+        "pt": "Atenção"
+      }
+    }
+  ],
+  "lexicon": {
+    "en": {
+      "kg/ha": "kilos per hectare",
+      "#software": "the software channel"
+    },
+    "pt": {
+      "Download Anyway": "Dáunloud Êniuêi",
+      "Download": "Dáunloud",
+      "shapefile": "xêipfáiou",
+      "kg/ha": "quilos por hectare",
+      "#software": "canal de software",
+      "Max rate per pass": "Max reite per pés",
+      "Humidity": "Ríumíditi",
+      "web app": "uéb ép"
+    }
+  },
+  "lines": [
+    {
+      "id": "hook",
+      "ch": "intro",
+      "card": "title",
+      "en": "Downloading a spreading map now asks for two numbers: the max rate per pass, and the humidity.",
+      "pt": "Agora, para baixar um mapa de aplicação, você informa dois números: a taxa máxima por passada e a umidade."
+    },
+    {
+      "id": "b1",
+      "ch": "before",
+      "shot": "before-table",
+      "focus": "table",
+      "pad": 30,
+      "en": "Until now, {dl}**Download** gave you one shapefile, with every plot at its full rate.",
+      "pt": "Até agora, o botão {dl}**Download** gerava um único shapefile, com cada talhão na taxa cheia.",
+      "beats": [
+        {
+          "at": "dl",
+          "click": "dl"
+        },
+        {
+          "at": "dl",
+          "ring": "dl"
+        }
+      ]
+    },
+    {
+      "id": "b2",
+      "ch": "before",
+      "en": "But a spreader can only apply about {cap}15,000 kg/ha in one pass.",
+      "pt": "Mas a distribuidora só consegue aplicar uns {cap}15 mil kg/ha numa passada.",
+      "say": {
+        "pt": "Mas a distribuidora só consegue aplicar uns {cap}quinze mil kg/ha numa passada."
+      },
+      "beats": [
+        {
+          "at": "cap",
+          "label": {
+            "target": "dl",
+            "side": "bottom",
+            "style": "warn",
+            "en": "One pass ≈ 15,000 kg/ha max",
+            "pt": "Uma passada ≈ 15.000 kg/ha no máx."
+          }
+        }
+      ]
+    },
+    {
+      "id": "n1",
+      "ch": "now",
+      "shot": "after-table",
+      "focus": "table",
+      "pad": 30,
+      "en": "Now, {dl}**Download** opens a short form first.",
+      "pt": "Agora, o {dl}**Download** abre um formulário curto antes.",
+      "beats": [
+        {
+          "at": "dl",
+          "click": "dl"
+        },
+        {
+          "at": "dl+0.45",
+          "shot": "after-dialog",
+          "fade": 0.3
+        },
+        {
+          "at": "dl+0.5",
+          "focus": "dialog",
+          "pad": 24
+        }
+      ]
+    },
+    {
+      "id": "n2",
+      "ch": "now",
+      "en": "{max}**Max rate per pass** starts at 15,000 kg/ha, and {hint}below it you see how many passes the map needs.",
+      "pt": "O campo {max}**Max rate per pass** começa em 15 mil kg/ha, e {hint}logo abaixo aparece quantas passadas o mapa vai ter.",
+      "say": {
+        "en": "{max}Max rate per pass starts at fifteen thousand kg/ha, and {hint}below it you see how many passes the map needs.",
+        "pt": "O campo {max}taxa máxima por passada começa em quinze mil kg/ha, e {hint}logo abaixo aparece quantas passadas o mapa vai ter."
+      },
+      "beats": [
+        {
+          "at": "max",
+          "ring": "maxRate",
+          "until": "hint"
+        },
+        {
+          "at": "hint",
+          "ring": "hint"
+        }
+      ]
+    },
+    {
+      "id": "n3",
+      "ch": "now",
+      "en": "Change it to {type}25,000, and this map {split}splits into three passes.",
+      "pt": "Mude para {type}25 mil, e este mapa {split}fica dividido em três passadas.",
+      "say": {
+        "en": "Change it to {type}twenty-five thousand, and this map {split}splits into three passes.",
+        "pt": "Mude para {type}vinte e cinco mil, e este mapa {split}fica dividido em três passadas."
+      },
+      "beats": [
+        {
+          "at": "type",
+          "click": "maxInput"
+        },
+        {
+          "at": "type+0.3",
+          "shot": "after-dialog-25k"
+        },
+        {
+          "at": "split",
+          "ring": "hint"
+        },
+        {
+          "at": "split",
+          "label": {
+            "target": "hint",
+            "side": "right",
+            "style": "blue",
+            "en": "75,000 ÷ 25,000 = 3 passes",
+            "pt": "75.000 ÷ 25.000 = 3 passadas"
+          }
+        }
+      ]
+    },
+    {
+      "id": "n4",
+      "ch": "now",
+      "en": "Then fill in {hum}**Humidity**: the feedstock moisture, measured the day before spreading.",
+      "pt": "Depois preencha a {hum}**Humidity**: a umidade do pó de rocha, medida no dia anterior ao espalhamento.",
+      "say": {
+        "pt": "Depois preencha a {hum}umidade do pó de rocha, medida no dia anterior ao espalhamento."
+      },
+      "beats": [
+        {
+          "at": "hum",
+          "click": "humInput"
+        },
+        {
+          "at": "hum+0.3",
+          "shot": "after-dialog-filled"
+        },
+        {
+          "at": "hum",
+          "ring": "humidity"
+        }
+      ]
+    },
+    {
+      "id": "n5",
+      "ch": "now",
+      "en": "Click {dl}**Download**. The zip holds {zip}one shapefile per pass.",
+      "pt": "Clique em {dl}**Download**. O zip traz {zip}um shapefile por passada.",
+      "beats": [
+        {
+          "at": "dl",
+          "click": "submit"
+        },
+        {
+          "at": "zip",
+          "label": {
+            "target": "dialog",
+            "side": "right",
+            "style": "blue",
+            "en": "…_pass1of3.shp\n…_pass2of3.shp\n…_pass3of3.shp",
+            "pt": "…_pass1of3.shp\n…_pass2of3.shp\n…_pass3of3.shp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "n5b",
+      "ch": "now",
+      "en": "Load them in the spreader one after another.",
+      "pt": "Carregue na distribuidora um depois do outro."
+    },
+    {
+      "id": "n6",
+      "ch": "now",
+      "shot": "after-table-settings",
+      "focus": "row",
+      "pad": 40,
+      "en": "The table now shows the {set}max rate and humidity saved with each event.",
+      "pt": "A tabela agora mostra a {set}taxa máxima e a umidade salvas em cada evento.",
+      "beats": [
+        {
+          "at": "set",
+          "ring": "settingsCell"
+        }
+      ]
+    },
+    {
+      "id": "w1",
+      "ch": "watch",
+      "shot": "after-dialog-filled",
+      "focus": "humidity",
+      "pad": 40,
+      "en": "Humidity is only recorded. It {not}does **not** change the rates on the map.",
+      "pt": "A umidade só fica registrada. Ela {not}**não** muda as taxas do mapa.",
+      "beats": [
+        {
+          "at": "not",
+          "ring": "humHint",
+          "warn": true
+        }
+      ]
+    },
+    {
+      "id": "w2",
+      "ch": "watch",
+      "shot": "unreviewed-dialog",
+      "focus": "dialog",
+      "pad": 24,
+      "en": "If the event isn't reviewed yet, you'll see a {warn}warning, and the button says {btn}**Download Anyway**.",
+      "pt": "Se o evento ainda não foi revisado, aparece um {warn}aviso, e o botão vira {btn}**Download Anyway**.",
+      "beats": [
+        {
+          "at": "warn",
+          "ring": "warning",
+          "warn": true,
+          "until": "btn"
+        },
+        {
+          "at": "btn",
+          "ring": "submit"
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "ch": "end",
+      "card": "end",
+      "en": "Questions? Ask in #software before you train your team.",
+      "pt": "Dúvidas? Pergunte no #software antes de treinar a equipe."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Feature video</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#2A92F4; --blue-600:#1C7AD6; --blue-50:#EAF4FE; --blue-100:#D4E9FD;
+    --ink:#020817; --slate-900:#0F172A; --slate-700:#334155; --muted:#64748B; --line:#E2E8F0; --slate-50:#F8FAFC; --slate-100:#F1F5F9;
+    --amber:#F59E0B; --amber-bg:#FEF3C7; --green:#16A34A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#0b1220;overflow:hidden}
+  body{font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+  #stage{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:hidden;transform-origin:0 0;
+    background:
+      radial-gradient(1100px 600px at 100% 0%, rgba(42,146,244,.14), transparent 60%),
+      radial-gradient(900px 600px at 0% 100%, rgba(42,146,244,.08), transparent 60%),
+      radial-gradient(circle at 1px 1px, rgba(15,23,42,.09) 1px, transparent 0) 0 0/24px 24px,
+      var(--slate-50)}
+  #view{position:absolute;overflow:hidden;border-radius:16px;background:#fff;
+    box-shadow:0 0 0 1px var(--line),0 1px 3px rgba(15,23,42,.08),0 40px 80px -40px rgba(15,23,42,.45)}
+  #world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+  .shot{position:absolute;left:0;top:0;display:block}
+  #overlay{position:absolute;inset:0;pointer-events:none}
+  .ring{position:absolute;border:4px solid var(--blue);border-radius:14px;
+    box-shadow:0 0 0 8px rgba(42,146,244,.18),0 0 40px rgba(42,146,244,.35)}
+  .ring.warn{border-color:var(--amber);box-shadow:0 0 0 8px rgba(245,158,11,.20),0 0 40px rgba(245,158,11,.35)}
+  .label{position:absolute;background:var(--ink);color:#fff;font-weight:700;font-size:30px;letter-spacing:-.01em;line-height:1.2;
+    padding:14px 22px;border-radius:16px;white-space:pre;box-shadow:0 18px 40px -16px rgba(2,8,23,.55)}
+  .label.warn{background:var(--amber);color:var(--ink)}
+  .label.blue{background:var(--blue)}
+  #cursor{position:absolute;left:0;top:0;width:44px;height:44px;transform-origin:6px 4px;filter:drop-shadow(0 4px 6px rgba(2,8,23,.35))}
+  .ripple{position:absolute;border-radius:50%;border:4px solid var(--blue);width:20px;height:20px}
+  #chip{position:absolute;left:56px;top:30px;display:flex;align-items:center;gap:14px;height:56px;padding:0 26px 0 12px;border-radius:999px;
+    background:#fff;border:1px solid var(--line);box-shadow:0 10px 30px -18px rgba(15,23,42,.5)}
+  #chip .n{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-weight:800;font-size:19px;display:grid;place-items:center}
+  #chip .t{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:22px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-900)}
+  #brand{position:absolute;right:56px;top:36px;display:flex;align-items:center;gap:18px}
+  #brand img{height:30px}
+  #brand .f{font-weight:700;font-size:22px;color:var(--slate-700);letter-spacing:-.01em}
+  #note{position:absolute;right:56px;bottom:22px;font-family:"JetBrains Mono",monospace;font-size:15px;color:var(--muted);letter-spacing:.04em}
+  #sub{position:absolute;left:50%;bottom:38px;max-width:1560px;transform:translateX(-50%);text-align:center;
+    background:rgba(2,8,23,.88);color:#fff;font-weight:600;font-size:42px;line-height:1.28;letter-spacing:-.01em;
+    padding:16px 34px 18px;border-radius:20px}
+  #sub b{color:#93C5FD;font-weight:700}
+  .card{position:absolute;inset:0;background:var(--ink);color:#fff;overflow:hidden}
+  .card .orb{position:absolute;right:-180px;top:-260px;width:760px;height:760px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #5FB0FA, var(--blue) 45%, #0B4F94 100%);opacity:.85}
+  .card .orb::after{content:"";position:absolute;inset:-70px;border-radius:50%;border:2px dashed rgba(147,197,253,.35)}
+  .card .logo{position:absolute;left:120px;top:96px;height:44px}
+  .card .kicker{position:absolute;left:120px;top:300px;font-family:"JetBrains Mono",monospace;font-size:26px;letter-spacing:.08em;text-transform:uppercase;color:#93C5FD;display:flex;gap:16px;align-items:center}
+  .card .kicker::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 8px rgba(42,146,244,.25)}
+  .card h1{position:absolute;left:120px;top:360px;width:1300px;font-weight:800;font-size:112px;line-height:.98;letter-spacing:-.045em}
+  .card h1 em{font-style:normal;color:var(--blue)}
+  .card .who{position:absolute;left:120px;top:640px;width:1250px;font-size:38px;line-height:1.35;color:#CBD5E1}
+  .card .pill{position:absolute;left:120px;top:780px;display:inline-flex;gap:14px;align-items:center;font-weight:700;font-size:28px;
+    padding:16px 26px;border-radius:999px;background:rgba(42,146,244,.16);border:1.5px solid rgba(147,197,253,.4);color:#E0F2FE}
+  .card .pill.amber{background:rgba(245,158,11,.16);border-color:rgba(253,230,138,.45);color:#FEF3C7}
+  #endcard h1{top:300px}
+  #endcard .who{top:520px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="view"><div id="world"></div></div>
+  <div id="overlay"></div>
+  <div id="chip"><div class="n"></div><div class="t"></div></div>
+  <div id="brand"><span class="f"></span><img src="engine/logo.svg" alt="Terradot"></div>
+  <div id="note"></div>
+  <div class="card" id="titlecard"><div class="orb"></div><img class="logo" src="engine/logo-dark.svg" alt="Terradot">
+    <div class="kicker"></div><h1></h1><div class="who"></div><div class="pill"></div></div>
+  <div class="card" id="endcard"><div class="orb"></div><img class="logo" src="engine/logo-dark.svg" alt="Terradot">
+    <h1></h1><div class="who"></div><div class="pill amber"></div></div>
+  <div id="sub"></div>
+</div>
+<script src="build/data.js"></script>
+<script src="engine/engine.js"></script>
+</body>
+</html>
