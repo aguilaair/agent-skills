@@ -8,8 +8,8 @@ const BASE = process.env.WEB_BASE;
 const REVIEWED_FIELD = 268; // highest rate 75,000 kg/ha
 const UNREVIEWED_FIELD = 257;
 const P = __dirname;
-const PRIV = { redact: ['nav[aria-label=breadcrumb]', '[data-sidebar=footer]'], hide: ['nextjs-portal'] };
-const snap = (page, id, targets) => shoot(page, P, id, targets, PRIV);
+const OPTS = { hide: ['nextjs-portal'] };
+const snap = (page, id, targets) => shoot(page, P, id, targets, OPTS);
 
 (async () => {
   await clerkSetup({ publishableKey: process.env.CLERK_PUBLISHABLE_KEY, secretKey: process.env.CLERK_SECRET_KEY });

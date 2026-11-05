@@ -32,19 +32,18 @@ Run the branch's app and drive it with Playwright. The monorepo explains how: `w
   - `fv.sh capture <worktree> <capture.cjs>` runs a capture signed in, with the dev keys, `WEB_BASE` and wms-app's `NODE_PATH` set.
   - `fv.sh db <worktree> "<sql>"` reads or seeds that worktree's database.
   - `fv.sh relink <worktree>` re-derives Cognito entry links in a database copied from an older snapshot.
-- Use `shoot(page, project, id, targets, {redact, hide, private, toasts, hover})` once per UI state: the table, the dialog open, the dialog after typing, and so on.
+- Use `shoot(page, project, id, targets, {hide, toasts, hover})` once per UI state: the table, the dialog open, the dialog after typing, and so on.
   - Targets are named locators. Every ring, click, label and focus in the script points at a target name.
   - Shots of one page share coordinates, so the camera cross-fades between them without jumping.
   - Check the target rects in `shots.json`: a locator that matched an outer wrapper rings half the page.
-  - `private: true` covers tax IDs and emails wherever they show.
   - `toasts: false` hides a toast left over from an earlier step.
   - `hover: true` keeps a hover tooltip in the still.
 - Points and polygons on a map live on the canvas. `map-lib.cjs` gets the map instance, frames the camera, turns a coordinate into a click point, and `mark`s it as a target.
 - **Before** shots: in the same worktree, check out main's version of the changed component files (`git show main:<path> > <path>`). Shoot once hot reload picks them up, then `git checkout` them back. If the "before" screen does not exist yet, show where the work happens today instead.
 - Viewport 1280×800 at deviceScaleFactor 2. Shoot the whole viewport, not a crop, so the camera has context.
-- Blur names of farms and people, contacts and prices (`redact`). Hide dev chrome such as `nextjs-portal` (`hide`).
+- Show the data as it is. These films are internal, so leave names of farms and people, tax IDs, contacts and prices visible: do not use `redact` or `private`. Hide dev chrome such as `nextjs-portal` (`hide`).
 
-Done when `shots/shots.json` holds every target the script will name, and you have read every PNG with nothing private left on it.
+Done when `shots/shots.json` holds every target the script will name, and you have read every PNG with no dev chrome left on it.
 
 ## 3 · Script: `video.json`
 
