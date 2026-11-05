@@ -42,5 +42,6 @@ the links are absolute.
 After installing on a new machine, run `/setup-p3` in T3 Code to write
 `~/.agents/p3-models.md` for that machine's providers.
 
-`agents/` holds prompt briefs that the skills hand to delegated workers.
-They are not harness agents and are not installed anywhere.
+A skill's `agents/` folder holds prompt briefs it hands to delegated workers.
+They are not harness agents. They live inside the skill so `install.sh` links
+them along with it.
