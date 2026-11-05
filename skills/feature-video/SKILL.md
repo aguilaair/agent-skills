@@ -26,8 +26,20 @@ Done when every step names a button, field or column that exists in the branch's
 
 Run the branch's app and drive it with Playwright. The monorepo explains how: `web/docs/local-ui-verification.md` covers the stack, the Clerk sign-in token, and `NODE_PATH` from wms-app. Use a worktree of your own. The worktree database is a copy of real data, so set any state you need there, such as a saved value or an unreviewed event. Never set it anywhere else.
 
-- `fv.sh init <project dir>` copies in the engine page and `capture-lib.cjs`. Keep the project and its capture script outside the repo.
-- Use `shoot(page, project, id, targets, {redact, hide})` once per UI state: the table, the dialog open, the dialog after typing, and so on. Targets are named locators. Every ring, click, label and focus in the script points at a target name. Shots of one page share coordinates, so the camera cross-fades between them without jumping.
+- `fv.sh init <project dir>` copies in the engine page, `capture-lib.cjs` and `map-lib.cjs`. Keep the project and its capture script outside the repo.
+- `fv.sh` also runs the worktree side; each command's usage is in `fv.sh`'s header.
+  - `fv.sh dev-user <worktree>` points your user at the dev Clerk id, so API writes don't come back 401.
+  - `fv.sh capture <worktree> <capture.cjs>` runs a capture signed in, with the dev keys, `WEB_BASE` and wms-app's `NODE_PATH` set.
+  - `fv.sh db <worktree> "<sql>"` reads or seeds that worktree's database.
+  - `fv.sh relink <worktree>` re-derives Cognito entry links in a database copied from an older snapshot.
+- Use `shoot(page, project, id, targets, {redact, hide, private, toasts, hover})` once per UI state: the table, the dialog open, the dialog after typing, and so on.
+  - Targets are named locators. Every ring, click, label and focus in the script points at a target name.
+  - Shots of one page share coordinates, so the camera cross-fades between them without jumping.
+  - Check the target rects in `shots.json`: a locator that matched an outer wrapper rings half the page.
+  - `private: true` covers tax IDs and emails wherever they show.
+  - `toasts: false` hides a toast left over from an earlier step.
+  - `hover: true` keeps a hover tooltip in the still.
+- Points and polygons on a map live on the canvas. `map-lib.cjs` gets the map instance, frames the camera, turns a coordinate into a click point, and `mark`s it as a target.
 - **Before** shots: in the same worktree, check out main's version of the changed component files (`git show main:<path> > <path>`). Shoot once hot reload picks them up, then `git checkout` them back. If the "before" screen does not exist yet, show where the work happens today instead.
 - Viewport 1280×800 at deviceScaleFactor 2. Shoot the whole viewport, not a crop, so the camera has context.
 - Blur names of farms and people, contacts and prices (`redact`). Hide dev chrome such as `nextjs-portal` (`hide`).
