@@ -23,6 +23,11 @@ screens. Unlike `explainer-video` it ships its engine (`fv.sh`); the first run
 installs Kokoro TTS, faster-whisper and `playwright-core` into
 `~/.cache/feature-video`.
 
+And `release-kit`: ties `feature-video` and `release-announcement` together.
+`prep` runs on a schedule and drafts the feature videos missing for PRs merged
+since the last #software announcement. `ship` writes the changelog and bento
+image and bundles them with the approved videos under `~/release-kit/`.
+
 ## Install or update
 
 ```bash
