@@ -58,6 +58,45 @@
   .card .pill{position:absolute;left:120px;top:780px;display:inline-flex;gap:14px;align-items:center;font-weight:700;font-size:28px;
     padding:16px 26px;border-radius:999px;background:rgba(42,146,244,.16);border:1.5px solid rgba(147,197,253,.4);color:#E0F2FE}
   .card .pill.amber{background:rgba(245,158,11,.16);border-color:rgba(253,230,138,.45);color:#FEF3C7}
+  /* title card in an area's colours (video.json "area") */
+  #titlecard .wm,#titlecard .motif{display:none}
+  #titlecard.area{background:radial-gradient(1300px 1050px at 98% 45%,var(--area) 0%,var(--area-2) 46%,var(--ink) 86%)}
+  #titlecard.area .orb{display:none}
+  #titlecard.area .wm{display:block;position:absolute;right:-30px;bottom:-80px;font-weight:800;font-size:300px;line-height:1;letter-spacing:-.06em;color:rgba(255,255,255,.08);white-space:nowrap}
+  #titlecard.area .kicker::before{display:none}
+  #titlecard.area .kicker{gap:18px;color:var(--area-soft);font-size:24px}
+  #titlecard.area .chip-area{display:flex;gap:14px;align-items:center;font-family:Inter,system-ui,sans-serif;font-weight:700;font-size:30px;letter-spacing:0;text-transform:none;
+    padding:12px 26px 12px 18px;border-radius:999px;background:var(--area);color:#fff;box-shadow:0 10px 30px -10px var(--area)}
+  #titlecard.area .chip-area .e{font-size:36px}
+  #titlecard.area h1{top:390px}
+  #titlecard.area h1 em{color:var(--area-soft)}
+  #titlecard.area .pill{background:color-mix(in srgb,var(--area) 22%,transparent);border-color:color-mix(in srgb,var(--area-soft) 45%,transparent);color:#fff}
+  /* the feature's own UI beside the title (video.json "motif"), built from the web app's components at natural size */
+  #titlecard.has-motif h1{width:840px;font-size:104px}
+  #titlecard.has-motif .who{top:660px;width:760px;font-size:34px}
+  #titlecard.has-motif .pill{top:790px}
+  #titlecard.has-motif .motif{display:block;position:absolute;left:1030px;top:540px;transform:translateY(-50%) rotate(-1.5deg);transform-origin:0 50%}
+  .motif .ui{zoom:2;color:var(--slate-900);font-size:14px;line-height:20px;font-family:Inter,system-ui,sans-serif}
+  .motif .panel{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 30px 60px -20px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.15)}
+  .motif .badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:500;line-height:16px;white-space:nowrap}
+  .motif .b-green{background:rgba(34,197,94,.10);color:#16A34A} .motif .b-yellow{background:rgba(234,179,8,.12);color:#CA8A04}
+  .motif .b-red{background:rgba(239,68,68,.10);color:#DC2626} .motif .b-purple{background:rgba(168,85,247,.10);color:#9333EA}
+  .motif .b-blue{background:rgba(42,146,244,.10);color:var(--blue)} .motif .b-gray{background:var(--slate-100);color:#4B5563} .motif .b-grayAlt{background:#E5E7EB;color:#374151}
+  .motif svg.i{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-1px}
+  .motif .m{color:var(--muted)} .motif .sub{display:block;font-size:12px;color:var(--muted)}
+  .motif .h{font-weight:600;font-size:16px;padding:14px 16px 4px}
+  .motif table{border-collapse:collapse;width:100%}
+  .motif td,.motif th{padding:8px 12px;text-align:left;white-space:nowrap;border-top:1px solid var(--line)}
+  .motif th{font-weight:500;color:var(--muted);font-size:13px;background:var(--slate-50)}
+  .motif .cb{display:inline-block;width:14px;height:14px;border:1.5px solid var(--blue);border-radius:4px;vertical-align:-2px}
+  .motif .btn{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;font-weight:500;border-radius:8px;padding:6px 12px}
+  .motif .tabs{display:inline-flex;background:var(--slate-100);border-radius:8px;padding:3px;gap:2px;font-size:13px}
+  .motif .tabs span{padding:3px 9px;border-radius:6px;color:var(--muted)}
+  .motif .tabs .on{background:#fff;color:var(--slate-900);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .motif .toast{position:absolute;right:-20px;top:-62px;width:270px;background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D;border-radius:10px;padding:12px 14px;
+    display:flex;gap:10px;font-size:13px;box-shadow:0 16px 30px -12px rgba(0,0,0,.45);transform:rotate(2.5deg)}
+  .motif .toast b{display:block;font-weight:600}
+  .motif .toast svg.i{width:16px;height:16px;margin-top:2px}
   #endcard h1{top:300px}
   #endcard .who{top:520px}
 </style>
@@ -69,8 +108,8 @@
   <div id="chip"><div class="n"></div><div class="t"></div></div>
   <div id="brand"><span class="f"></span><img src="engine/logo.svg" alt="Terradot"></div>
   <div id="note"></div>
-  <div class="card" id="titlecard"><div class="orb"></div><img class="logo" src="engine/logo-dark.svg" alt="Terradot">
-    <div class="kicker"></div><h1></h1><div class="who"></div><div class="pill"></div></div>
+  <div class="card" id="titlecard"><div class="orb"></div><div class="wm"></div><img class="logo" src="engine/logo-dark.svg" alt="Terradot">
+    <div class="kicker"></div><h1></h1><div class="who"></div><div class="pill"></div><div class="motif"><div class="ui"></div></div></div>
   <div class="card" id="endcard"><div class="orb"></div><img class="logo" src="engine/logo-dark.svg" alt="Terradot">
     <h1></h1><div class="who"></div><div class="pill amber"></div></div>
   <div id="sub"></div>

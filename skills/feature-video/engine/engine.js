@@ -21,6 +21,31 @@
   const spring = (k) => (k <= 0 ? 0 : k >= 1.6 ? 1 : 1 - Math.exp(-7 * k) * (Math.cos(11 * k) + (7 / 11) * Math.sin(11 * k)));
   const win = (t, a, b, fin = 0.3, fout = 0.3) => (t < a || t > b ? 0 : Math.min(clamp((t - a) / fin), clamp((b - t) / fout)));
 
+  // ---------- title card: stakeholder areas and motif icons ----------
+  // An area matches a section of the release changelog. colors: [main, deep, soft text].
+  const AREAS = {
+    'lab-ops': { name: { en: 'Lab ops', pt: 'Lab ops' }, emoji: '🧪', colors: ['#0D9488', '#134E4A', '#5EEAD4'] },
+    finance: { name: { en: 'Finance', pt: 'Financeiro' }, emoji: '💰', colors: ['#D97706', '#78350F', '#FCD34D'] },
+    logistics: { name: { en: 'Logistics', pt: 'Logística' }, emoji: '🚚', colors: ['#16A34A', '#14532D', '#86EFAC'] },
+    'quarry-qa': { name: { en: 'Quarry QA', pt: 'QA de pedreiras' }, emoji: '⛏️', colors: ['#EA580C', '#7C2D12', '#FDBA74'] },
+    lca: { name: { en: 'LCA & data', pt: 'LCA e dados' }, emoji: '🌲', colors: ['#4F46E5', '#312E81', '#A5B4FC'] },
+    everyone: { name: { en: 'Everyone', pt: 'Todos' }, emoji: '🌐', colors: ['#2A92F4', '#0B4F94', '#93C5FD'] },
+  };
+  // Lucide icons, written {i:name} inside a motif.
+  const svg = (d) => `<svg class="i" viewBox="0 0 24 24">${d}</svg>`;
+  const ICONS = {
+    check: svg('<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>'),
+    alert: svg('<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>'),
+    x: svg('<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>'),
+    plus: svg('<path d="M5 12h14M12 5v14"/>'),
+    arrow: svg('<path d="M5 12h14M12 5l7 7-7 7"/>'),
+    file: svg('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 13H8M16 17H8"/>'),
+    layers: svg('<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>'),
+    search: svg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
+    calendar: svg('<path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>'),
+    pin: svg('<path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'),
+  };
+
   // ---------- layout ----------
   const FRAME = { x: 80, y: 112, w: 1760, h: 768 };
   const FC = { x: FRAME.x + FRAME.w / 2, y: FRAME.y + FRAME.h / 2 };
@@ -196,6 +221,23 @@
   // static text
   const tc = $('#titlecard');
   tc.querySelector('.kicker').textContent = tr(V.kicker);
+  const area = V.area && AREAS[V.area];
+  if (V.area && !area) warn(`area "${V.area}" is not one of: ${Object.keys(AREAS).join(', ')}`);
+  if (area) {
+    tc.classList.add('area');
+    [['--area', 0], ['--area-2', 1], ['--area-soft', 2]].forEach(([k, i]) => tc.style.setProperty(k, area.colors[i]));
+    const kicker = tc.querySelector('.kicker');
+    kicker.innerHTML = '<span class="chip-area"><span class="e"></span><span class="n"></span></span><span class="feat"></span>';
+    kicker.querySelector('.e').textContent = area.emoji;
+    kicker.querySelector('.n').textContent = tr(area.name);
+    kicker.querySelector('.feat').textContent = tr(V.kicker);
+    tc.querySelector('.wm').textContent = tr(area.name);
+  }
+  const motif = tr(V.motif);
+  if (motif) {
+    tc.classList.add('has-motif');
+    tc.querySelector('.motif .ui').innerHTML = motif.replace(/\{i:([a-z-]+)\}/g, (m, k) => ICONS[k] ?? (warn(`motif icon {i:${k}} is not one of: ${Object.keys(ICONS).join(', ')}`), m));
+  }
   tc.querySelector('h1').innerHTML = tr(V.title);
   tc.querySelector('.who').innerHTML = tr(V.who);
   tc.querySelector('.pill').textContent = tr(V.ships);
@@ -321,12 +363,14 @@
     const tOp = titleLines.length ? (t <= titleEnd ? 1 : 1 - clamp((t - titleEnd) / 0.6)) : 0;
     tc.style.opacity = tOp; tc.style.visibility = tOp > 0 ? 'visible' : 'hidden';
     if (tOp > 0) {
-      const parts = ['.kicker', 'h1', '.who', '.pill'];
-      parts.forEach((sel, i) => {
+      // Frame 0 is the thumbnail chat apps show, so the kicker and title are in place from the start.
+      ['.kicker', 'h1'].forEach((sel) => set(tc.querySelector(sel), { y: 0, op: 1 }));
+      ['.who', '.pill'].forEach((sel, i) => {
         const k = spring((t - 0.15 - i * 0.18) / 0.6);
         set(tc.querySelector(sel), { y: lerp(30, 0, k), op: clamp((t - 0.15 - i * 0.18) / 0.3) });
       });
       tc.querySelector('.orb').style.transform = `translate(${-t * 6}px, ${t * 4}px) scale(${1 + t * 0.006})`;
+      tc.querySelector('.motif').style.translate = `${-t * 5}px ${t * 2}px`;
     }
     const eOp = clamp((t - endStart) / 0.6);
     ec.style.opacity = eOp; ec.style.visibility = eOp > 0 ? 'visible' : 'hidden';
@@ -382,7 +426,20 @@
   window.__beats = [...shotSwitches.map((s) => s.t), ...camKeys.map((k) => k.t), ...rings.map((r) => r.t0), ...clicks.map((c) => c.t), ...labels.map((l) => l.t0)].sort((a, b) => a - b);
   window.__seek = seek;
   const imgs = [...document.images].map((im) => im.decode().catch(() => warn(`image failed to load: ${im.src}`)));
-  window.__ready = Promise.all([document.fonts.ready, ...imgs]).then(() => { seek(0); return true; });
+  // Beside a motif the title column is narrow, so the lines under the title follow its real height.
+  const layoutTitle = () => {
+    if (!motif) return;
+    const h1 = tc.querySelector('h1'), who = tc.querySelector('.who'), pill = tc.querySelector('.pill');
+    const lineCount = () => Math.round(h1.offsetHeight / parseFloat(getComputedStyle(h1).lineHeight));
+    if (lineCount() > 2) h1.style.fontSize = '88px';
+    if (lineCount() > 3) warn('title runs past three lines beside the motif; shorten it');
+    who.style.top = h1.offsetTop + h1.offsetHeight + 44 + 'px';
+    pill.style.top = who.offsetTop + who.offsetHeight + 40 + 'px';
+    if (pill.offsetTop + pill.offsetHeight > 1000) warn('title card text runs off the bottom; shorten the title or the who line');
+    const m = tc.querySelector('.motif').getBoundingClientRect(), s = $('#stage').getBoundingClientRect();
+    if (m.right > s.right + 1 || m.top < s.top || m.bottom > s.bottom) warn('motif runs off the frame; make it narrower or shorter');
+  };
+  window.__ready = Promise.all([document.fonts.ready, ...imgs]).then(() => { layoutTitle(); seek(0); return true; });
 
   window.__ready.then(() => {
     if (P.has('t')) seek(parseFloat(P.get('t')));

@@ -56,6 +56,9 @@ The shape is fixed: a title-card hook, then **Before** (1–2 lines), **Now** (o
 - Spell numbers as digits in the text and as words in `say` ("15 mil" → "quinze mil"). Write `kg/ha` and the like once in the lexicon.
 - Say negations in full: "can only", "cannot", "does **not**". Kokoro swallows the t of "can't", and the sentence flips.
 - A marker `{name}` goes right before the word a beat lands on. Each line carries the same markers in both languages, and in `say` when `say` is used.
+- The title card is the thumbnail Slack and WhatsApp show, so it says whose feature it is and what it is:
+  - `area` colours the card for the changelog section the feature sits in, and adds that section as a chip and in large faded letters: `lab-ops`, `finance`, `logistics`, `quarry-qa`, `lca` or `everyone`. The colours and names are in `AREAS` in `engine/engine.js`. A new section goes there first.
+  - `motif` is the one piece of the feature's UI that says what it does, rebuilt in HTML beside the title: the badges a batch gets, the toast a save shows, the tags a vendor carries. Build it from the web app's real components, not from a screenshot crop, with the data from your shots. `index.html` styles the parts at the app's own size: `panel`, `h`, `table`/`th`/`td`, `badge` with `b-green`, `b-yellow`, `b-red`, `b-purple`, `b-blue`, `b-gray` or `b-grayAlt` (the variants of `web/src/components/ui/badge.tsx`), `btn`, `tabs` (`on` for the active one), `toast`, `cb`, `m` and `sub` for muted text. `{i:check}` puts in a Lucide icon (`ICONS` in `engine.js` lists them). Keep it about 400 px wide and a few rows tall. It can be a string, or `{"en": …, "pt": …}` when its text is not UI.
 - Beats, per line: `shot` (a cross-fade to another capture), `focus` + `pad` (a camera move to a target), `ring` (+ `warn` for amber, `until` a marker or line id), `click` (the cursor travels there and clicks), and `label` (`side`, `style`, `en`/`pt`, `\n` for stacked lines). `at` takes a marker, `marker+0.3`, `end`, or a line id. A line-level `shot`/`focus` moves the camera as the line starts.
 
 Done when every claim matches the change card and the code, and both languages carry the same lines and markers.
@@ -73,7 +76,8 @@ Run `fv.sh stills <project> --lang en`, then again with `--lang pt`. Read both c
 - a ring or click on the wrong element, or landing before the word it belongs to;
 - a label covering the thing it explains, or sitting behind the subtitle;
 - text you could not read on a phone; focus tighter if so (the engine warns when 14 px app text drops below ~18 px);
-- the PT film, not just the EN one. Its lines run longer and break differently.
+- the PT film, not just the EN one. Its lines run longer and break differently;
+- frame 0 (`fv.sh stills <project> --lang pt 0`). Slack and WhatsApp show it as the thumbnail, so it must show the title, the area and the motif, with the motif inside the frame and matching the real screen.
 
 Fix, re-run, look again. Done when both sheets are clean and the page prints no errors or warnings, apart from the read-back words you accepted.
 
