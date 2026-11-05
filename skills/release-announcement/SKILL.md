@@ -13,19 +13,31 @@ Two branches. A changelog request runs **Changelog**. An image request with the 
 2. **List the commits.** Run `git log --first-parent --format=%s <base>^2..<head main commit>`, where `^2` is the main-side parent of a prod merge. Count commits by `type(scope)`. Drop `ci`, `docs`, `test`, `chore`, `refactor` and `build`. Also drop plumbing nobody sees (pg-sync, dbt, infra, alerts) unless it changes something a person notices.
 3. **Read before you write.** For every item that makes the post, read its PR body with `gh pr view N --json title,body`. Titles undersell, and they skip things like gates, flags and backfills.
 4. **Check that it's live.** Some PRs say a change waits on a Terraform apply, a flag, a test mode, or a stacked follow-up. Check what prod does wherever that's cheap (`curl -sI`, a status endpoint). Otherwise, word the line as "rolling out" or "coming soon" and flag it.
-5. **Write it in house style.** Put it in one code block, ready to paste:
+5. **Name the stakeholders.** Each line names the people its rollout was coordinated with: the ops lead who asked for it, signed off on it, or now runs the workflow. Propose them from the PR body and its Linear issue, and from the tags the last announcement gave the same area. Then ask the user to confirm the list. Look up each Slack ID with `slack_search_users`. A fix nobody has to act on carries no tag. When a tagged person needs a note of their own ("no workflow change on your side"), it goes after their tag.
+6. **Write it in house style.** Slack renders standard Markdown, so the post uses headings, bullets and bold. Group it by stakeholder area (Lab ops, Finance, Logistics, Quarry QA, LCA, Everyone), not by code area. Put it in one `markdown` code block, ready to paste:
 
-   ```
-   hi @channel
+   ````markdown
+   # :rocket: Platform release, <Mon D>
 
-   <one-line opener>
+   Hello <!channel>! <one-line opener>. **<When it goes live, e.g. "Live by end of day US time">**, so there's time to flag anything.
+   Training videos for the new workflows are in the thread :thread:
 
-   :emoji: Area name [HEADS UP / ACTION REQUIRED when behaviour changed]
-   One line per change: what a person can now do or will now see
-   ```
+   ## :test_tube: Lab ops
+   - **Sample results page:** read every lab's results batch by batch, no more Hex :movie_camera: <@U…> <@U…>
+   - COC export no longer drops soil samples with negative ids
 
-   Group lines by product area, most impactful first. Write plain words over identifiers. Give a large separately-owned product (TerraScope) its own section and flag it as optional.
-6. **List what to check before posting.** After the block, list:
+   > :warning: **Heads up:** a behaviour that changed under people's feet
+   > :rotating_light: **Action required:** what someone must do, and by when
+   ````
+
+   - One `#` title for the post and one `##` heading per area, with the area's Slack emoji. Add the access scope in the heading when the area has one (`## :moneybag: Finance (erw:finance)`).
+   - Each change is a `-` bullet. Bold only the name a person will look for on screen (a page, a tab, a button), then a colon. Stakeholder tags go at the end of the line.
+   - Put Heads up and Action required lines in a `>` quote at the end of their area, not inside a bullet.
+   - Mark a change that has a video in the thread with :movie_camera:, before its tags.
+   - Most impactful area first, and the same inside each area. Write plain words over identifiers. Give a large separately-owned product (TerraScope) its own `##` section and flag it as optional in its heading.
+   - No tables and no nested bullets. Each change stays one line a person can scan.
+   - Write `<!channel>` and `<@U…>` as written here when the post goes out through the Slack tools. When the user pastes it by hand, write `@channel` and `@Name` instead.
+7. **List what to check before posting.** After the block, list:
    - each claim you couldn't verify;
    - what you left out, and why;
    - follow-ups or backfills the PRs say are owed.

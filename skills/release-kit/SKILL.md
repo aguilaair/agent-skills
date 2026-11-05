@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Release kit
 
-Two modes over one **window**. `prep` runs on a schedule and drafts the feature videos the window is missing. `ship` runs by hand when the user wants to announce. It writes the changelog and bento image and bundles them with the approved videos, so everything can be posted at once. Neither mode posts, comments or attaches anything anywhere. The user does that.
+Two modes over one **window**. `prep` runs on a schedule and drafts the feature videos the window is missing. `ship` runs by hand when the user wants to announce. It writes the changelog and bento image, bundles them with the approved videos, and posts the release to Slack once the user says go. Nothing else in either mode posts, comments or attaches anything anywhere.
 
 This skill orchestrates two others and leaves them unchanged: `feature-video` makes each video and `release-announcement` makes the changelog and image. Follow each of them in full where it is named. Work in the monorepo's primary checkout (`git worktree list`, first line) and run `git fetch origin main prod` first.
 
@@ -14,7 +14,7 @@ This skill orchestrates two others and leaves them unchanged: `feature-video` ma
 
 The window is every PR merged to main since the last announcement. That is also the range `release-announcement` uses, so the videos and the changelog cover the same PRs.
 
-1. Find the last announcement with the 1mcp Slack server: `slack_search_public` with filters `from:<current user> in:#software`, sorted by timestamp. It is the newest message that lists changes under area headings (it usually opens with `hi @channel` or "New since the last update"). Note its time `T`.
+1. Find the last announcement with the 1mcp Slack server: `slack_search_public` with filters `from:<current user> in:#software`, sorted by timestamp. It is the newest message that lists changes under area headings (it opens with a `#` title such as "Platform release", or with `Hello @channel`, `hi @channel` or "New since the last update"). Note its time `T`.
 2. The base is the last prod merge before `T`: `git log --first-parent --format='%H %cI %s' --before=<T> -1 origin/prod`. Prod deploy merges come from `release/YYYY-MM-DD-N` branches.
 3. The window is `git log --first-parent --format='%H %cI %s' <base>^2..origin/main`. Each commit is one squash-merged PR, with `(#N)` in its subject.
 
@@ -73,6 +73,7 @@ Videos live in `~/release-kit/videos/<oldest pr>-<slug>/`, which is a `feature-v
        - Its database can be older than prod. Before inventing fixtures, run `fv.sh relink`, then set only the state the walkthrough needs with `fv.sh db`.
      - For a change, the "before" screens come from the parent of the demo's oldest merge (`git show <oldest mergeCommit>^:<path> > <path>`, for each path any of its PRs changed), not from main and not from prod. Prod catches up with main within hours, so neither one is "before".
      - These videos are the training videos, because the change is already live when they arrive. The end card reads "Questions? Ask in #software." ("Dúvidas? Pergunte no #software."), with no line about training a team, and the ops post presents the video as the way to learn the feature.
+     - Give the title card the demo's `area`, the changelog section its PRs will sit in, and a `motif` built from the screen the demo is about, as `feature-video` describes. The thread replies use the same area emoji.
      - Say "QA" as the English letters in both films: put `"QA": "Q-A"` in `lexicon.en` and `"QA": "quiú ei"` in `lexicon.pt`. Bare "QA" comes out as "kah", and "quê á" spells out the Portuguese letter names, which is not how the team says it.
      - Review the read-backs and both stills sheets yourself, to that skill's bar. The user's checks (listening to the PT film, approving the ops post) happen at ship.
      - Set `postMerge: true`, so ship knows the video came after the merge.
@@ -83,8 +84,28 @@ Videos live in `~/release-kit/videos/<oldest pr>-<slug>/`, which is a `feature-v
 ## ship
 
 1. **Refresh.** Run prep steps 1–4, so the ledger covers PRs merged since the last prep run. If any demo is still `waiting`, list it with its PRs and ask whether to draft it now (prep step 5, in as many batches as it takes) or ship without it.
-2. **Changelog.** Run `release-announcement`'s Changelog branch. Tell it which PRs have a video (`has-video`, `drafted`) and which demo each belongs to, so their lines can say a video is coming in the thread and the PRs of one demo can share a line. Wait for the user to approve the text.
+2. **Changelog.** Run `release-announcement`'s Changelog branch. Tell it which PRs have a video (`has-video`, `drafted`) and which demo each belongs to, so their lines end with :movie_camera: and the PRs of one demo can share a line. Wait for the user to approve the text.
 3. **Bento.** Run `release-announcement`'s Bento image branch on the approved text.
-4. **Videos.** For each demo with a PR in the changelog and a `drafted` or `has-video` status, show both MP4s and its ops post draft (EN and PT, as `feature-video`'s hand-over writes it, naming every PR the demo covers, and noting that the video came after merge when `postMerge` is set). Ask the user to listen to each PT film once. Mark each demo `approved` or `dropped`. A drafted demo with no PR in the changelog's range stays as it is and waits for the next announcement.
-5. **Bundle.** Done when `~/release-kit/ship/<date>/` holds `changelog.txt`, `announcement.png`, `bento.html`, the approved MP4s, `posts.md` (each ops post with its video file names) and `PLAN.md`. `PLAN.md` gives the posting order: the changelog with the image in #software first, then each feature's videos with its post in that thread, then the ops posts in the ops channel. Suggest Slack's "Schedule message", so the posts go out together.
-6. **Close out.** After the user says it is posted, set `shippedIn: <date>` and `status: shipped` on each approved entry. The next prep run finds the new post and starts a new window.
+4. **Training posts.** For each demo with a PR in the changelog and a `drafted` or `has-video` status, show both MP4s and draft its two thread replies, one per language. Each reply carries one video:
+
+   ````markdown
+   ## :test_tube: Sample results
+   **For:** lab ops · <@U…> <@U…>
+   Read every lab's results batch by batch, with a QA badge on each batch, instead of in Hex.
+   ````
+
+   - The heading is the area's emoji and the feature's name as the film's title card says it. The PT reply uses the PT name and text, and keeps on-screen labels in English, as the films do.
+   - **For:** names the role and tags the same people as the demo's changelog line.
+   - One or two lines on what the person can now do. The video is the training, so the post does not repeat its steps.
+   - When `postMerge` is unset, add a `>` quote saying the change is waiting for their OK before it merges.
+
+   Ask the user to listen to each PT film once. Mark each demo `approved` or `dropped`. A drafted demo with no PR in the changelog's range stays as it is and waits for the next announcement.
+5. **Bundle.** Done when `~/release-kit/ship/<date>/` holds `changelog.md`, `announcement.png`, `bento.html`, the approved MP4s, `posts.md` (each thread reply with its video file name, in posting order) and `PLAN.md`. `PLAN.md` lists every post in order, with its channel, its file and whether it goes in the thread:
+   1. The changelog, as the parent message in #software.
+   2. In its thread: the bento image, then each approved demo in changelog order, its EN reply then its PT reply.
+6. **Post.** Show `PLAN.md` and wait for the user to say go. A go covers this plan only. Then post with the 1mcp Slack server, in the plan's order:
+   - Get #software's channel ID with `slack_search_channels`.
+   - Post the changelog with `slack_send_message`, and keep its `ts` as the thread's parent.
+   - Post each file as a thread reply with `<skill dir>/slack-upload.sh <file> <channel_id> <thread_ts> <reply.md>`. It gets an upload URL for the file's exact size, uploads it, and shares it in the thread with the reply's text.
+   - Read the thread back with `slack_read_thread`. Done when every reply is in it with its file, in order. If a call fails partway, stop and report what is posted and what is not. Never re-post what is already there.
+7. **Close out.** Once the thread checks out, set `shippedIn: <date>` and `status: shipped` on each approved entry, and give the user the post's link. The next prep run finds the new post and starts a new window.
