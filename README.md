@@ -23,6 +23,10 @@ screens. Unlike `explainer-video` it ships its engine (`fv.sh`); the first run
 installs Kokoro TTS, faster-whisper and `playwright-core` into
 `~/.cache/feature-video`.
 
+And `terradot-logo`: Terradot-family logos and app icons, drawn as one change
+to the Terradot mark or the TerraScope ring. `logo.sh` runs a drafts file
+through shapely (via `uv`) and writes SVGs, PNGs (macOS `sips`) and a preview page.
+
 And `release-kit`: ties `feature-video` and `release-announcement` together.
 `prep` runs on a schedule and drafts the feature videos missing for PRs merged
 since the last #software announcement. `ship` writes the changelog and bento
