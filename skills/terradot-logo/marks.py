@@ -6,6 +6,7 @@ The drafts file runs with this module's names in scope and defines:
   APP     the app's display name, shown in the preview's in-context row
   DRAFTS  a list of dicts {key, title, note, base, shapes}
             base    "terradot", "terrascope" (ring only, no centre dot), or a shapely geometry
+                    (cut tiles from terradot_shape() or terrascope_tiles())
             shapes  extra shapely geometries filled in the mark colour
           or {key, title, note, d} with a finished 32x32 path string
 
@@ -14,7 +15,7 @@ All coordinates are in a 32x32 box centred on (16, 16). Writes, per draft,
 comparing every draft at app-icon and avatar sizes.
 """
 import html, math, os, runpy, subprocess, sys
-from shapely.geometry import LineString, Point, Polygon, box
+from shapely.geometry import LineString, MultiPolygon, Point, Polygon, box
 from shapely.ops import unary_union
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -27,6 +28,23 @@ HOLE_R = 6.4
 def terradot_d():
     """The Terradot mark as one evenodd path in the 32x32 box."""
     return open(os.path.join(HERE, "assets", "terradot-mark.d")).read().strip()
+
+
+def terradot_shape():
+    """The Terradot mark as shapely geometry (16 tiles), for cutting into."""
+    from svgpathtools import parse_path
+    g = None
+    for sub in parse_path(terradot_d()).continuous_subpaths():
+        pts = [(p.real, p.imag) for seg in sub for p in (seg.point(i / 12) for i in range(12))]
+        poly = Polygon(pts).buffer(0)
+        g = poly if g is None else g.symmetric_difference(poly)
+    return g
+
+
+def clean(g, thin=0.95, drop=lambda p: False):
+    """Drop pieces too thin to read as tiles (or matching drop), then re-round the rest."""
+    keep = [p for p in getattr(g, "geoms", [g]) if not p.buffer(-thin).is_empty and not drop(p)]
+    return rnd(MultiPolygon(keep), 0.3)
 
 
 def pt(r, a):
