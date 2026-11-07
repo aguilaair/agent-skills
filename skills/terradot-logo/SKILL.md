@@ -12,7 +12,7 @@ A family mark is the parent mark with **one purposeful change made out of its ti
 - Blue `#2C94F4` (the apps' `--primary`), ink `#161616`, white.
 - **Terradot mark** (`assets/terradot-mark.d`, 32x32, evenodd): a tiled disc with an open centre, empty circle r≈6.4 at (16, 16). Use it for Terradot-wide tools (Slack apps, VPN, internal services).
 - **TerraScope ring** (`terrascope_tiles()` in `marks.py`): two tiled courses split by a crosshair, centre dot r 3.1. Use it for anything TerraScope.
-- Existing marks: LCA Platform (sunburst: tiles regrouped into stages and parts, `gardens/lca/src/app/icon.svg` in the monorepo) and Terradot VPN drafts (the open centre becomes a keyhole, its slot cut out through the bottom tiles) are the woven kind to aim for. TerraScope Reviews and Proposals (dot → check, plus) and Terradot Journal (bookmark in the centre) are older glyph swaps, kept only for consistency.
+- Existing marks: LCA Platform (sunburst: tiles regrouped into stages and parts, `gardens/lca/src/app/icon.svg` in the monorepo) and Terradot VPN (the whole mark is a padlock body, its shackle two more tiles in the same rhythm; picked over a keyhole cut through the centre) are the woven kind to aim for. TerraScope Reviews and Proposals (dot → check, plus) and Terradot Journal (bookmark in the centre) are older glyph swaps, kept only for consistency.
 
 ## Steps
 
