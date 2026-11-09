@@ -46,7 +46,22 @@ for link in "$AGENTS"/*; do
   fi
 done
 
+# Shared p3 model config: link ~/.agents/p3-models.md to this repo's copy, so
+# every machine runs the same roles. A real file already there is kept as
+# p3-models.md.bak. Skipped for --project installs.
+models_note=""
+if [[ "${1:-}" != "--project" ]]; then
+  MODELS="${HOME}/.agents/p3-models.md"
+  if [[ -e "$MODELS" && ! -L "$MODELS" ]]; then
+    mv "$MODELS" "$MODELS.bak"
+    models_note=" (previous file kept as $MODELS.bak)"
+  fi
+  ln -sfn "$ROOT/config/p3-models.md" "$MODELS"
+fi
+
 printf 'linked %d skills into %s and %s' "$linked" "$AGENTS" "$CLAUDE"
 [[ "$skipped" -gt 0 ]] && printf ', %d skipped' "$skipped"
 [[ "$pruned" -gt 0 ]] && printf ', %d pruned' "$pruned"
 printf '\n'
+[[ "${1:-}" != "--project" ]] && printf 'linked %s to config/p3-models.md%s\n' "$MODELS" "$models_note"
+exit 0

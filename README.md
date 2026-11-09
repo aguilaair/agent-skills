@@ -39,8 +39,13 @@ git -C ~/agent-skills pull && ~/agent-skills/install.sh
 names that already exist as real directories. Keep the clone where you ran it:
 the links are absolute.
 
-After installing on a new machine, run `/setup-p3` in T3 Code to write
-`~/.agents/p3-models.md` for that machine's providers.
+`install.sh` also links `~/.agents/p3-models.md` to `config/p3-models.md`, so
+every machine runs the same p3 model roles. A real file already at that path
+is moved to `p3-models.md.bak`. To change roles, edit `config/p3-models.md`
+(or run `/setup-p3` with the global location, which writes through the link),
+commit, push, and pull on the other machines. A role whose provider isn't set
+up on a machine fails there, so set up Cursor and OpenCode wherever the file
+names them, or put a project-root `p3-models.md` in place, which wins.
 
 A skill's `agents/` folder holds prompt briefs it hands to delegated workers.
 They are not harness agents. They live inside the skill so `install.sh` links
