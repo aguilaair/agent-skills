@@ -142,3 +142,9 @@ Each ship bundle's `release.json` records its release, written by `ship` and com
 3. **Pull a feature, when the user says so.** Revert its PR on main in a PR of its own. Close the deploy PR, then run ship steps 2 and 7's Pin with a new release commit that includes the revert. The new commit also takes in everything else merged since, so list those PRs, and post a reply in the thread saying what came out and what came in, after the user approves its text. Then update `release.json`.
 4. **Deploy.** Once the user says go, merge the deploy PR as a merge commit, which `docs/ci.md` requires: `gh pr merge <n> --merge --delete-branch --match-head-commit <sha>`. Then find the prod deploy that the push to `prod` starts (`gh run list --workflow migrate-build-deploy-prod.yml --branch prod --limit 1`) and wait for it to finish. If it fails, report it with its log link and stop.
 5. **Close out.** Set `deployedAt` in `release.json`, and `shippedIn: <date>` and `status: shipped` on each entry announced in it. Offer a short reply in the thread saying it is live; post it only after the user approves the text. The next prep run starts from the release commit.
+6. **Clean up**, once the deploy has finished and the close-out is written. Done when only the record and the starting points remain:
+   - In `~/release-kit/videos/`, delete `build/` (render intermediates, about 1-3 GB each) from every project whose entries are all `shipped`. Keep `out/`, `shots/`, `video.json` and the capture scripts.
+   - Delete the scratch files this release wrote outside `~/release-kit/` (`/tmp` dumps, helper scripts, temporary worktrees).
+   - Keep the newest `ledger.json.bak-*` and delete the older ones. Delete the bundle's `release.json.bak-*`.
+   - Stop any DB tunnel or dev server this release started, once `lsof` shows it has no clients.
+   - Keep `~/release-kit/ship/<date>/` whole. It is the release record, and prep reads the newest `release.json`.
