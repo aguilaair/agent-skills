@@ -19,7 +19,7 @@ If nothing the user sees changes, skip step 2: approve the written scope in step
 Follow the UI branch of the **prototype** skill (`~/.agents/skills/prototype/UI.md`): variants on the host page, switched by `?variant=`, using the app's real layout, components, and data. A mock in the real app shows problems a standalone sketch hides, and it shows only what can be built.
 
 - **2 or 3 variants that really differ** (layout, information hierarchy, interaction), not three shades of one idea. One variant is fine when the user already described the design exactly. For a single small piece of UI (a button, a toast, a card), the **emil-prototype** skill fits better.
-- Capture each variant per [`../buildit/references/proof.md`](../buildit/references/proof.md) (Capture steps 1, 2, 6, and 8): its main state and the edge case most likely to break it, such as empty, long content, or a narrow viewport. Mock interactions get a short video.
+- Capture each variant per [`../buildit/references/proof.md`](../buildit/references/proof.md) (Capture steps 1, 2, 7, and 9): its main state and the edge case most likely to break it, such as empty, long content, or a narrow viewport. Mock interactions get a short video.
 - Use `html_preview` and `html_render` only when the app can't run locally, and say that the mock isn't in the real app.
 - Keep the mock out of trunk: do it in a worktree or on a `prototype/<slug>` branch.
 
@@ -29,14 +29,17 @@ Follow the UI branch of the **prototype** skill (`~/.agents/skills/prototype/UI.
 
 Approval is explicit, such as "go", "approved", "ship B", or a variant picked with changes the user describes. Anything else is feedback: change the mock, capture again, and show only what changed. Never file or build on silence, on a hint, or on "looks interesting."
 
-Before you file, confirm the details in one message: the approved variant, the behavior, the acceptance criteria, and what is out of scope.
+Before you file, confirm the details in one message: the approved variant, the behavior, the acceptance criteria, what is out of scope, the project and milestone, who asked for it, and the stakeholders.
 
 ## 4. File the issue
 
 Use the repo's issue tracker, per `docs/agents/issue-tracker.md` or the repo's AGENTS.md (for the Terradot monorepo: Linear, team EPDS). If the repo names no tracker, ask the user where to file.
 
 - **Title:** the change as the user would say it.
-- **Body:** the problem in the user's words; the approved design, with screenshots embedded (for Linear, upload with `prepare_file_upload` and embed the returned Markdown); the behavior; the **acceptance criteria**, written as checks a person can run against the app; out of scope; the variants not chosen and why, in one line each; and a link to the pushed `prototype/<slug>` branch.
+- **Project and milestone:** always set the project, and its milestone when it has milestones. Infer both from the change and the tracker's open projects, and ask when two fit.
+- **Body:**
+  - It opens with two lines. **Requested by:** the person who asked, with a link to where they asked (Slack thread, DM, meeting note). **Stakeholders:** the people who asked for the change, sign off on it, or will run the workflow, each with their role and Slack ID (`<@U…>`, from `slack_search_users`). Write `none` when nobody outside engineering acts on the change.
+  - Then the problem in the user's words; the approved design, with screenshots embedded (for Linear, upload with `prepare_file_upload` and embed the returned Markdown); the behavior; the **acceptance criteria**, written as checks a person can run against the app, with at least one **must not break** check on the nearest behavior that already works; out of scope; the variants not chosen and why, in one line each; and a link to the pushed `prototype/<slug>` branch.
 - Set the issue to ready for work (EPDS: `Todo`) and assign it to the user.
 
 Push the prototype branch so the issue's link resolves, then report the issue's identifier and URL.
