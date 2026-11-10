@@ -6,12 +6,13 @@ For any user-visible change. A green build proves nothing about what users see (
 
 1. Drive the app with `preview_*` for a browser UI or `device_*` for a simulator. Bootstrap empty local state first (setup route, dev menu, seeded data).
 2. Walk the happy path and at least one edge case (empty state, validation error, long content). Read the console for new errors.
-3. Capture before and after where it applies, the main flow, one narrow viewport (`preview_resize`) if layout changed, and dark mode (`preview_set_appearance`) if styling changed. `preview_snapshot` with `save: true` returns a `screenshotPath`.
-4. Interactions (a click that fills or reveals something, async states, multi-step flows, drags, animations) also get a short MP4, recorded with Playwright `recordVideo`. Static layout or copy changes need only screenshots.
-5. Playwright is an equally valid path when the T3 browser fights you (popovers that will not open, drags that will not start, lost sessions, `chrome-error://` tabs) or a scripted multi-step or multi-viewport run is more reliable. Reuse the repo's stored role sessions with `test.use({ storageState })`, screenshot each state full-page, and delete the throwaway spec unless it earns a place as a real test. Say which path you used.
-6. **Sign-in and recording:** when the repo documents a way to sign in and record the UI, follow it.
-7. Fix anything broken or ugly the capture reveals, then capture again. Cut taglines, helper text, and secondary labels; if a screen needs them to make sense, fix the layout.
-8. Embed each saved absolute path in chat: `![Ledger page, desktop](/abs/path.png)`. Keep files outside the repo (`/tmp/<ticket>/`).
+3. Run the **blast-radius** skill on the diff, then walk the screens and callers it names that share the changed code. Capture any that changed.
+4. Capture before and after where it applies, the main flow, one narrow viewport (`preview_resize`) if layout changed, and dark mode (`preview_set_appearance`) if styling changed. `preview_snapshot` with `save: true` returns a `screenshotPath`.
+5. Interactions (a click that fills or reveals something, async states, multi-step flows, drags, animations) also get a short MP4, recorded with Playwright `recordVideo`. Static layout or copy changes need only screenshots.
+6. Playwright is an equally valid path when the T3 browser fights you (popovers that will not open, drags that will not start, lost sessions, `chrome-error://` tabs) or a scripted multi-step or multi-viewport run is more reliable. Reuse the repo's stored role sessions with `test.use({ storageState })`, screenshot each state full-page, and delete the throwaway spec unless it earns a place as a real test. Say which path you used.
+7. **Sign-in and recording:** when the repo documents a way to sign in and record the UI, follow it.
+8. Fix anything broken or ugly the capture reveals, then capture again. Cut taglines, helper text, and secondary labels; if a screen needs them to make sense, fix the layout.
+9. Embed each saved absolute path in chat: `![Ledger page, desktop](/abs/path.png)`. Keep files outside the repo (`/tmp/<ticket>/`).
 
 ## Attach to the PR
 
