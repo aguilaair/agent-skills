@@ -35,6 +35,8 @@ Before you file, confirm the details in one message: the approved variant, the b
 
 Use the repo's issue tracker, per `docs/agents/issue-tracker.md` or the repo's AGENTS.md (for the Terradot monorepo: Linear, team EPDS). If the repo names no tracker, ask the user where to file.
 
+**Personal projects** are repos whose `origin` is not under `github.com/Terradot`. In one, file only when the user asks, and only in that repo's own tracker (its GitHub issues, or the tracker its AGENTS.md names), never in Terradot's Linear. Without a filed issue, the confirmed scope from step 3 is the brief for step 5. The **Requested by** and **Stakeholders** lines are for Terradot repos only.
+
 - **Title:** the change as the user would say it.
 - **Project and milestone:** always set the project, and its milestone when it has milestones. Infer both from the change and the tracker's open projects, and ask when two fit.
 - **Body:**
@@ -46,6 +48,6 @@ Push the prototype branch so the issue's link resolves, then report the issue's 
 
 ## 5. Hand off to buildit
 
-Run [`/buildit`](../buildit/SKILL.md) in this thread with the issue as its brief. Name the branch and PR after the issue, following the repo's convention (EPDS: `<user>/epds-<n>`, and `EPDS-<n>` in the PR title). Build the real feature from trunk. You may lift code from the winning variant, but the `?variant=` switch and the losing variants never ship. The proof for the PR shows each acceptance criterion holding and matches the approved screenshots; when it doesn't match, say so in the PR.
+Run [`/buildit`](../buildit/SKILL.md) in this thread with the issue (or, in a personal project with none filed, the confirmed scope) as its brief. Name the branch and PR after the issue when there is one, following the repo's convention (EPDS: `<user>/epds-<n>`, and `EPDS-<n>` in the PR title). Build the real feature from trunk. You may lift code from the winning variant, but the `?variant=` switch and the losing variants never ship. The proof for the PR shows each acceptance criterion holding and matches the approved screenshots; when it doesn't match, say so in the PR.
 
 If the user says to file but not build ("just file it", "I'll pick it up later"), stop after step 4.
