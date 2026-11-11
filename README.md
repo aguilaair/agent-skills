@@ -10,20 +10,6 @@ p3-mode and its playbooks, setup-p3, scope, buildit, the routed skills
 `c742dd6` (2026-10-27). That sync added `ketchup`, `ketchup-video`, `sharpen`,
 `in-your-own-words`, `statechart`, and the two formal-verification skills.
 
-And `explainer-video`: a narrated explainer film, its short cut, and a
-click-through presenter deck, all from one HTML composition.
-
-And `feature-video`: a short before/after video of a feature change for the
-ops team, in English and Brazilian Portuguese, filmed on the branch's real
-screens. Unlike `explainer-video` it ships its engine (`fv.sh`); the first run
-installs Kokoro TTS, faster-whisper and `playwright-core` into
-`~/.cache/feature-video`.
-
-And `release-kit`: ties `feature-video` and `release-announcement` together.
-`prep` runs on a schedule and drafts the feature videos missing for PRs merged
-since the last #software announcement. `ship` writes the changelog and bento
-image and bundles them with the approved videos under `~/release-kit/`.
-
 ## Install or update
 
 ```bash
