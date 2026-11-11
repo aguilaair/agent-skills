@@ -20,9 +20,11 @@ git clone https://github.com/aguilaair/agent-skills.git ~/agent-skills
 git -C ~/agent-skills pull && ~/agent-skills/install.sh
 ```
 
-`install.sh` links each `skills/<name>` into `~/.agents/skills/` and
-`~/.claude/skills/`, prunes links to skills removed from the repo, and skips
-names that already exist as real directories. Keep the clone where you ran it:
+`install.sh` links each `skills/<name>` into `~/.agents/skills/`, then into
+`~/.claude/skills/` (Claude Code), and into `~/.codex/skills/` and
+`~/.cursor/skills/` when `~/.codex` or `~/.cursor` exists. It prunes links to
+skills removed from the repo from every client, and skips names that already
+exist as real directories. Keep the clone where you ran it:
 the links are absolute.
 
 `install.sh` also links `~/.agents/p3-models.md` to `config/p3-models.md`, so

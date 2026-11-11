@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
-# Link these skills into ~/.agents/skills (T3 Code, other agents) and
-# ~/.claude/skills (Claude Code). Safe to re-run after `git pull`: links are
-# refreshed, links to skills removed from this repo are pruned, and real
-# directories that are not symlinks are left alone.
+# Link these skills into ~/.agents/skills (T3 Code and other agents), then into
+# every agent client on this machine that reads its own folder: ~/.claude/skills
+# (Claude Code), and ~/.codex/skills and ~/.cursor/skills when Codex or Cursor
+# is installed. Safe to re-run after `git pull`: links are refreshed, links to
+# skills removed from this repo are pruned, and real directories that are not
+# symlinks are left alone.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-AGENTS="${HOME}/.agents/skills"
-CLAUDE="${HOME}/.claude/skills"
-
+BASE="${HOME}"
 if [[ "${1:-}" == "--project" ]]; then
-  AGENTS="${2:?usage: ./install.sh --project /path/to/repo}/.agents/skills"
-  CLAUDE="${2}/.claude/skills"
+  BASE="${2:?usage: ./install.sh --project /path/to/repo}"
 fi
+AGENTS="${BASE}/.agents/skills"
 
-mkdir -p "$AGENTS" "$CLAUDE"
+# Client folders: Claude Code always; Codex and Cursor only where installed.
+CLIENTS=("${BASE}/.claude/skills")
+for client in .codex .cursor; do
+  [[ -d "${BASE}/${client}" ]] && CLIENTS+=("${BASE}/${client}/skills")
+done
+
+mkdir -p "$AGENTS" "${CLIENTS[@]}"
 linked=0
 skipped=0
 pruned=0
@@ -29,9 +35,11 @@ for skill in "$ROOT"/skills/*/; do
     continue
   fi
   ln -s "${skill%/}" "$AGENTS/$name"
-  if [[ -L "$CLAUDE/$name" || ! -e "$CLAUDE/$name" ]]; then
-    ln -sfn "../../.agents/skills/$name" "$CLAUDE/$name"
-  fi
+  for client in "${CLIENTS[@]}"; do
+    if [[ -L "$client/$name" || ! -e "$client/$name" ]]; then
+      ln -sfn "../../.agents/skills/$name" "$client/$name"
+    fi
+  done
   linked=$((linked + 1))
 done
 
@@ -41,7 +49,9 @@ for link in "$AGENTS"/*; do
   target="$(readlink "$link")"
   if [[ "$target" == "$ROOT/skills/"* && ! -e "$target" ]]; then
     rm "$link"
-    [[ -L "$CLAUDE/$(basename "$link")" ]] && rm "$CLAUDE/$(basename "$link")"
+    for client in "${CLIENTS[@]}"; do
+      [[ -L "$client/$(basename "$link")" ]] && rm "$client/$(basename "$link")"
+    done
     pruned=$((pruned + 1))
   fi
 done
@@ -59,7 +69,7 @@ if [[ "${1:-}" != "--project" ]]; then
   ln -sfn "$ROOT/config/p3-models.md" "$MODELS"
 fi
 
-printf 'linked %d skills into %s and %s' "$linked" "$AGENTS" "$CLAUDE"
+printf 'linked %d skills into %s and %s' "$linked" "$AGENTS" "${CLIENTS[*]}"
 [[ "$skipped" -gt 0 ]] && printf ', %d skipped' "$skipped"
 [[ "$pruned" -gt 0 ]] && printf ', %d pruned' "$pruned"
 printf '\n'
